@@ -2,11 +2,22 @@ import 'dotenv/config';
 import express from 'express';
 import router from '@routes/index';
 import database from '@config/database';
+import error from '@middelware/error';
+import auth from '@middelware/auth';
 const app = express();
 const port = 3000;
+app.use(express.json());
+const skipMiddleware = (req, res, next) => {
+	const url = req.originalUrl;
+	if (url === '/api/v1/create' || url === '/api/v1/createsession') {
+		return next();
+	}
+	auth(req, res, next);
+};
 
+app.use(skipMiddleware);
 app.use('/api/v1', router);
-
+app.use(error);
 database()
 	.then(() =>
 		app.listen(port, () => {
