@@ -11,7 +11,7 @@ class Aws {
   };
 
   async perSignedPostUrl(fileName: string) {
-    if (!fileName) throw new Error("File name must be provided");
+    if (!fileName) throw new Error("File name must be provided.");
     return s3.getSignedUrl("putObject", this.presignedUrlParams);
   }
 
@@ -22,7 +22,6 @@ class Aws {
       Body: params.body,
       ContentType: params.ContentType,
     };
-    console.log(uploadParams);
     const data = await s3.upload(uploadParams).promise();
     return data;
   }
