@@ -64,7 +64,9 @@ class User {
     }
   }
 
-  async verifyToken(token: string): Promise<jwt.JwtPayload> {
+  async verifyToken(
+    token: string
+  ): Promise<{ id: string; name: string; role: string }> {
     return new Promise((resolve, reject) => {
       jwt.verify(
         token,
@@ -72,10 +74,14 @@ class User {
         (error, user: jwt.JwtPayload) => {
           if (error)
             reject({
-              message: error.message,
-              code: 400,
+              message: "Invalid token",
+              code: 401,
             });
-          resolve(user);
+          resolve({
+            id: user.id,
+            name: user.name,
+            role: user.role,
+          });
         }
       );
     });

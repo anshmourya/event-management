@@ -1,51 +1,79 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface Event extends Document {
-	name: string;
-	price: number;
-	location: string;
-	max_ticket: number;
-	thumbnail: string;
-	about?: string;
-	tags?: string[];
-	start_date: Date;
-	end_date: Date;
+  name: string;
+  price: number;
+  location: string;
+  max_ticket: number;
+  thumbnail: string;
+  about?: string;
+  tags?: string[];
+  start_date: Date;
+  end_date: Date;
+  ticket_booked?: number;
+}
+
+export interface Booking extends Document {
+  createdBy: mongoose.Types.ObjectId | string;
+  event: mongoose.Types.ObjectId | string;
+  paid: boolean;
 }
 const event: Schema<Event> = new Schema({
-	name: {
-		type: String,
-		required: true,
-	},
-	price: {
-		type: Number,
-		required: true,
-	},
-	location: {
-		type: String,
-		required: true,
-	},
-	max_ticket: {
-		type: Number,
-		required: true,
-	},
-	thumbnail: {
-		type: String,
-		required: true,
-	},
-	about: String,
-	tags: {
-		type: [String],
-	},
-	start_date: {
-		type: Date,
-		required: true,
-	},
-	end_date: {
-		type: Date,
-		required: true,
-	},
+  name: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  location: {
+    type: String,
+    required: true,
+  },
+  max_ticket: {
+    type: Number,
+    required: true,
+  },
+  thumbnail: {
+    type: String,
+    required: true,
+  },
+  about: String,
+  tags: {
+    type: [String],
+  },
+  start_date: {
+    type: Date,
+    required: true,
+  },
+  end_date: {
+    type: Date,
+    required: true,
+  },
+  ticket_booked: {
+    type: Number,
+    defaultValue: 0,
+  },
 });
 
-const EventModel = mongoose.model<Event>('event', event);
+const booking: Schema<Booking> = new Schema({
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+    required: true,
+  },
+  event: {
+    type: Schema.Types.ObjectId,
+    ref: "event",
+    required: true,
+  },
+  paid: {
+    type: Boolean,
+    required: true,
+  },
+});
 
+const EventModel = mongoose.model<Event>("event", event);
+export const BookingModel = mongoose.model<Booking>("booking", booking);
 export default EventModel;

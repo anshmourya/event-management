@@ -7,14 +7,15 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
     if (!authHeader) {
       return res.status(401).json({
         status: "Token is not present.",
-        message: "you are not signed in.",
+        message: "You are not signed in.",
       });
     }
 
-    await user.verifyToken(authHeader);
+    const verifiedUser = await user.verifyToken(authHeader);
+    req.user = verifiedUser;
     next();
   } catch (error) {
-    console.error("auth middelware error:", error);
+    console.error("Auth middleware error:", error);
     next(error);
   }
 };

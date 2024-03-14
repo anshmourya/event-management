@@ -41,6 +41,18 @@ class EventController {
       next(error);
     }
   }
+  async booking(req: Request, res: Response, next: NextFunction) {
+    try {
+      await event.createBooking(req.body);
+      return res.json({
+        status: "success",
+        message: "tickets has been booked successfully",
+        data: null,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 const eventcontroller = new EventController();

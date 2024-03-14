@@ -1,5 +1,9 @@
 import { aws } from "service/aws";
-import EventModel, { Event as eventprops } from "@schema/event";
+import EventModel, {
+  Booking,
+  BookingModel,
+  Event as eventprops,
+} from "@schema/event";
 
 type createEvent = Omit<eventprops, "thumbnail"> & {
   thumbnail: Express.Multer.File;
@@ -41,6 +45,23 @@ class Event {
       return eventArray;
     } catch (error) {
       console.error("Error getting all the events", error);
+      throw error;
+    }
+  }
+
+  async createBooking(details: Booking) {
+    try {
+      const foundEvent = await EventModel.findById(details.event);
+      if (foundEvent.ticket_booked >= foundEvent.max_ticket) {
+        throw new Error("All ticket has been booked");
+      }
+      await BookingModel.create(details);
+      await EventModel.findByIdAndUpdate(event, {
+        ticket_booked: foundEvent.ticket_booked + 1,
+      });
+      return true;
+    } catch (error) {
+      console.error("Error creating the booking for the participant", error);
       throw error;
     }
   }
