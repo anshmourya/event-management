@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { event } from "service/event";
+import payment from "service/payment";
 class EventController {
   async createEvent(req: Request, res: Response, next: NextFunction) {
     try {
@@ -43,11 +44,29 @@ class EventController {
   }
   async booking(req: Request, res: Response, next: NextFunction) {
     try {
-      await event.createBooking(req.body);
+      const bookingOrder = await event.createBookingOrder(req.body);
       return res.json({
         status: "success",
         message: "tickets has been booked successfully",
-        data: null,
+        data: bookingOrder,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async bookingVerfication(req: Request, res: Response, next: NextFunction) {
+    try {
+      const options = {
+        ...req.body,
+        userId: req.user.id,
+      };
+
+      const verifyPayment = payment.verfiication(options);
+      res.json({
+        message: "booking has been done successfully",
+        data: verifyPayment,
+        status: "success",
       });
     } catch (error) {
       next(error);

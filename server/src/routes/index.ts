@@ -15,4 +15,9 @@ router.post(
 );
 router.get("/event/list", eventcontroller.getallEvents);
 router.get("/event/:id", eventcontroller.getEventById);
+
+//bookings
+router.post("/bookingOrder", eventcontroller.booking);
+router.post("/bookingVerification", eventcontroller.bookingVerfication);
+
 export default router;

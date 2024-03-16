@@ -4,6 +4,8 @@ import EventModel, {
   BookingModel,
   Event as eventprops,
 } from "@schema/event";
+import payment from "service/payment";
+import { orderOptions } from "@type/global.types";
 
 type createEvent = Omit<eventprops, "thumbnail"> & {
   thumbnail: Express.Multer.File;
@@ -49,20 +51,35 @@ class Event {
     }
   }
 
-  async createBooking(details: Booking) {
+  async createBookingOrder(details: { event: string }) {
     try {
       const foundEvent = await EventModel.findById(details.event);
+      if (!foundEvent) throw new Error("Couldn't find event");
       if (foundEvent.ticket_booked >= foundEvent.max_ticket) {
         throw new Error("All ticket has been booked");
       }
-      await BookingModel.create(details);
-      await EventModel.findByIdAndUpdate(event, {
-        ticket_booked: foundEvent.ticket_booked + 1,
-      });
-      return true;
+      const options: orderOptions = {
+        currency: "INR",
+        amount: Number(foundEvent.price * 100), // amount in the smallest currency uint
+        receipt: foundEvent.name,
+      };
+      const order = await payment.createOrder(options);
+      return order;
     } catch (error) {
-      console.error("Error creating the booking for the participant", error);
+      console.error(
+        "Error creating the booking order for the participant",
+        error
+      );
       throw error;
+    }
+  }
+
+  async createBooking(bookingDetail: Booking) {
+    try {
+      const newBooking = await BookingModel.create(bookingDetail);
+      return newBooking;
+    } catch (error) {
+      console.error("error creating the booking after the payment", error);
     }
   }
 }

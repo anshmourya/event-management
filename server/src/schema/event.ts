@@ -13,10 +13,13 @@ export interface Event extends Document {
   ticket_booked?: number;
 }
 
-export interface Booking extends Document {
+export interface Booking {
   createdBy: mongoose.Types.ObjectId | string;
   event: mongoose.Types.ObjectId | string;
   paid: boolean;
+  paymentId: string;
+  orderId: string;
+  paymentSignature: string;
 }
 const event: Schema<Event> = new Schema({
   name: {
@@ -54,6 +57,7 @@ const event: Schema<Event> = new Schema({
   ticket_booked: {
     type: Number,
     defaultValue: 0,
+    required: true,
   },
 });
 
@@ -70,6 +74,18 @@ const booking: Schema<Booking> = new Schema({
   },
   paid: {
     type: Boolean,
+    required: true,
+  },
+  paymentId: {
+    type: String,
+    required: true,
+  },
+  orderId: {
+    type: String,
+    required: true,
+  },
+  paymentSignature: {
+    type: String,
     required: true,
   },
 });
