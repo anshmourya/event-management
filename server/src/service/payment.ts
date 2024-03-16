@@ -2,7 +2,6 @@ import { instance } from "@config/razorpay";
 import { orderOptions, paymentVerification } from "@type/global.types";
 import crypto from "crypto";
 import { event } from "./event";
-import { paymentVerificationSchema } from "@utils/validation";
 class Payment {
   async createOrder(options: orderOptions) {
     try {
@@ -16,10 +15,6 @@ class Payment {
 
   async verfiication(verfiication: paymentVerification) {
     try {
-      await paymentVerificationSchema.validate(verfiication, {
-        abortEarly: false,
-      });
-
       const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
         verfiication;
       const hmac = crypto.createHmac(
