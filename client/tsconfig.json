@@ -16,13 +16,15 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "components/*": ["./src/components/*"],
       "@pages/*": ["./src/pages/*"]
     },
 
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

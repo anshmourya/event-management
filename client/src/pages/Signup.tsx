@@ -11,12 +11,29 @@ import {
 } from "@/components/ui/select";
 import { SigniUpInput } from "@/constant/inputs";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { signUpSchema } from "@/utils/validation";
+import ErrorMessage from "@/components/ErrorMessage";
+import useAccount from "@/hooks/useAccount";
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
 const Signup = () => {
-  const form = useForm();
   const navigate = useNavigate();
-  const onsubmit = (data) => {
-    console.log(data);
+  const { createUser } = useAccount();
+  const form = useForm({
+    resolver: yupResolver(signUpSchema),
+  });
+  const newUserHandler = useMutation({
+    mutationFn: createUser,
+    mutationKey: ["newUserHandler"],
+  });
+  const onsubmit = async (data) => {
+    await toast.promise(newUserHandler.mutateAsync(data), {
+      loading: "processing...",
+      success: "your account has been successfully created now please Login",
+      error: newUserHandler.error.message,
+    });
   };
   return (
     <div className="container grid h-screen place-items-center">
@@ -32,25 +49,44 @@ const Signup = () => {
                 return (
                   <div key={input.name}>
                     <Label>{input.placeholder}</Label>
-                    <Input placeholder={input.placeholder} name={input.name} />
+                    <Input
+                      placeholder={input.placeholder}
+                      name={input.name}
+                      control={form.control}
+                    />
                   </div>
                 );
               case "option":
                 return (
                   <div key={input.name}>
                     <Label>{input.placeholder}</Label>
-                    <Select name={input.name}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder={input.placeholder} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {input.options?.map((option) => (
-                          <SelectItem value={option} key={option}>
-                            {option}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <Controller
+                      name={input.name as never}
+                      control={form.control}
+                      render={({ field }) => (
+                        <Select
+                          name={input.name}
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder={input.placeholder} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {input.options?.map((option) => (
+                              <SelectItem value={option} key={option}>
+                                {option}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                    <ErrorMessage
+                      message={form.formState?.errors[
+                        input.name
+                      ]?.message.toString()}
+                    />
                   </div>
                 );
               default:

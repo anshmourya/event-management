@@ -5,8 +5,10 @@ import router from "@routes/index";
 import database from "@config/database";
 import error from "@middelware/error";
 import auth from "@middelware/auth";
+import cors from "cors";
 const app = express();
 const port = 3000;
+app.use(cors());
 app.use(express.json());
 
 const skipMiddleware = (req: Request, res: Response, next: NextFunction) => {
