@@ -21,9 +21,6 @@ const Input: React.FC<InputProps> = ({
     control,
     defaultValue: "",
   });
-  React.useEffect(() => {
-    console.log(formState.errors);
-  }, [formState.errors]);
   return (
     <div>
       <input

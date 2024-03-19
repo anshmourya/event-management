@@ -1,4 +1,3 @@
-import Navbar from "@/components/navbar";
 import { H5, P } from "@/components/typograph";
 
 import {
@@ -10,34 +9,31 @@ import {
 } from "@/components/ui/card";
 const Home = () => {
   return (
-    <>
-      <Navbar />
-      <div className="container mt-10">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3, 4, 5, 6, 6, 6, 6, 6].map((data) => (
-            <Card
-              className="max-w-[300px] capitalize m-3 cursor-pointer"
-              key={data}
-            >
-              <CardHeader>
-                <CardTitle>
-                  <H5>Ticket Left </H5>
-                </CardTitle>
-                <CardDescription>i dont know anything</CardDescription>
-              </CardHeader>
+    <div className="">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        {[1, 2, 3, 4, 5, 6, 6, 6, 6, 6].map((data) => (
+          <Card
+            className="max-w-[300px] capitalize m-3 cursor-pointer"
+            key={data}
+          >
+            <CardHeader>
+              <CardTitle>
+                <H5>Ticket Left </H5>
+              </CardTitle>
+              <CardDescription>i dont know anything</CardDescription>
+            </CardHeader>
 
-              <CardContent>
-                <P className="my-3">only 200 ticket left</P>
-                <img
-                  src="https://static-cse.canva.com/blob/1396716/1600w-wlXEWqHuexQ.jpg"
-                  alt=" current event"
-                />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+            <CardContent>
+              <P className="my-3">only 200 ticket left</P>
+              <img
+                src="https://static-cse.canva.com/blob/1396716/1600w-wlXEWqHuexQ.jpg"
+                alt=" current event"
+              />
+            </CardContent>
+          </Card>
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 
