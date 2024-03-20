@@ -13,6 +13,11 @@ interface Event {
   ticket_booked?: number;
 }
 
+export interface eventResponse extends Omit<Event, "thumbnail"> {
+  thumbnail: string;
+  _id: string;
+}
+
 const useEvent = () => {
   const createEvent = async (newEvent: Event) => {
     try {
@@ -29,7 +34,17 @@ const useEvent = () => {
     }
   };
 
-  return { createEvent };
+  const getEventList = async (): Promise<eventResponse[]> => {
+    try {
+      const { data } = await apis.get(`${baseUrl}/api/v1/event/list`, {});
+      return data.data;
+    } catch (error) {
+      console.error("error getting all the event", error);
+      throw error;
+    }
+  };
+
+  return { createEvent, getEventList };
 };
 
 export default useEvent;

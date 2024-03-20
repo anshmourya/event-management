@@ -44,6 +44,9 @@ class Event {
   async getAll(): Promise<eventprops[]> {
     try {
       const eventArray = await EventModel.find();
+      if (eventArray?.length == 0) {
+        throw new Error("There is no event");
+      }
       return eventArray;
     } catch (error) {
       console.error("Error getting all the events", error);
