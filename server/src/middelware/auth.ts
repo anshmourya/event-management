@@ -4,6 +4,7 @@ import user from "service/user";
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
+
     if (!authHeader) {
       return res.status(401).json({
         status: "Token is not present.",

@@ -29,7 +29,7 @@ const Signin = () => {
   const onsubmit = async (data) => {
     await toast.promise(loginHandler.mutateAsync(data), {
       loading: "Processing",
-      error: loginHandler.error.message,
+      error: loginHandler?.error?.message,
       success: "you are successfully signed in",
     });
   };

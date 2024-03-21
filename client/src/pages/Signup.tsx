@@ -32,7 +32,7 @@ const Signup = () => {
     await toast.promise(newUserHandler.mutateAsync(data), {
       loading: "processing...",
       success: "your account has been successfully created now please Login",
-      error: newUserHandler.error.message,
+      error: newUserHandler?.error?.message,
     });
   };
   return (

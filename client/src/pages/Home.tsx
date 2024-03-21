@@ -8,8 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import useEvent, { eventResponse } from "@/hooks/useEvent";
 import { useQuery } from "@tanstack/react-query";
+import Detail from "@/components/Detail";
 
 const Home = () => {
   const { getEventList } = useEvent();
@@ -26,31 +28,29 @@ const Home = () => {
     <div className="">
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
         {eventList.data.map((event) => (
-          <Card
-            className="max-w-[300px] capitalize m-3 cursor-pointer"
-            key={event._id}
-          >
-            <CardHeader>
-              <CardTitle>
-                <H5>{event.name}</H5>
-              </CardTitle>
-              <CardDescription>{event.about}</CardDescription>
-              <CardDescription>
-                {format(event.start_date, "LLL dd, y")} -{" "}
-                {format(event.end_date, "LLL dd, y")}
-              </CardDescription>
-            </CardHeader>
+          <Detail key={event._id} detail={event}>
+            <Card className="max-w-[300px] capitalize m-3 cursor-pointer">
+              <CardHeader>
+                <CardTitle>
+                  <H5>{event.name}</H5>
+                </CardTitle>
+                <CardDescription>{event.about}</CardDescription>
+                <CardDescription>
+                  {format(event.start_date, "LLL dd, y")} -{" "}
+                  {format(event.end_date, "LLL dd, y")}
+                </CardDescription>
+              </CardHeader>
 
-            <CardContent>
-              <P className="my-3">
-                only {event.max_ticket - event.ticket_booked} ticket left
-              </P>
-              <img
-                src="https://static-cse.canva.com/blob/1396716/1600w-wlXEWqHuexQ.jpg"
-                alt=" current event"
-              />
-            </CardContent>
-          </Card>
+              <CardContent>
+                <P className="my-3">
+                  only {event.max_ticket - event.ticket_booked} ticket left
+                </P>
+                <AspectRatio ratio={16 / 9}>
+                  <img src={event.thumbnail} alt=" current event" />
+                </AspectRatio>
+              </CardContent>
+            </Card>
+          </Detail>
         ))}
       </div>
     </div>
