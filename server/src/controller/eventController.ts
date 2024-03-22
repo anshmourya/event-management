@@ -88,6 +88,21 @@ class EventController {
       next(error);
     }
   }
+
+  async getBookingByUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.user.id;
+      console.log(userId);
+      const bookings = await event.getBookingsByUser(userId);
+      res.json({
+        message: "bookings has been fetched successfully",
+        data: bookings,
+        status: "success",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 const eventcontroller = new EventController();

@@ -8,7 +8,7 @@ export const signUpSchema = Yup.object({
     .required("Email is required")
     .email("Invalid email address"),
   password: Yup.string()
-    .min(8, "Minimum 8 characters required")
+    .min(4, "Minimum 4 characters required")
     .required("password is required."),
   role: Yup.string().required("role is required"),
 });
@@ -16,7 +16,7 @@ export const signUpSchema = Yup.object({
 export const signInSchema = Yup.object({
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
-    .min(8, "minimum 8 character required")
+    .min(4, "minimum 4 character required")
     .required("Please select the place."),
 });
 

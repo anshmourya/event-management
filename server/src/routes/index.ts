@@ -25,5 +25,6 @@ router.post(
   validate(paymentVerificationSchema),
   eventcontroller.bookingVerfication
 );
+router.get("/bookings/list", eventcontroller.getBookingByUser);
 
 export default router;

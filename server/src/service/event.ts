@@ -88,6 +88,17 @@ class Event {
       return newBooking;
     } catch (error) {
       console.error("error creating the booking after the payment", error);
+      throw error;
+    }
+  }
+
+  async getBookingsByUser(userId: string) {
+    try {
+      const bookings = await BookingModel.find({ createdBy: userId });
+      return bookings;
+    } catch (error) {
+      console.error("error getting the user booking", error);
+      throw error;
     }
   }
 }

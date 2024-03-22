@@ -38,7 +38,17 @@ const useBooking = () => {
     }
   };
 
-  return { createOrder, paymentVerification };
+  const MyBookings = async () => {
+    try {
+      const { data } = await apis.get(`${baseUrl}/api/v1/bookings/list`, {});
+      return data.data;
+    } catch (error) {
+      console.error("Error in MyBookings API", error);
+      throw error;
+    }
+  };
+
+  return { createOrder, paymentVerification, MyBookings };
 };
 
 export default useBooking;
