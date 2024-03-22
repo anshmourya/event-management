@@ -67,7 +67,12 @@ class Event {
         receipt: foundEvent.name,
       };
       const order = await payment.createOrder(options);
-      return order;
+      return {
+        ...order,
+        image: foundEvent.thumbnail,
+        description: foundEvent.about,
+        name: foundEvent.name,
+      };
     } catch (error) {
       console.error(
         "Error creating the booking order for the participant",

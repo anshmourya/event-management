@@ -36,7 +36,8 @@ class Payment {
         paid: true,
       };
 
-      return await event.createBooking(bookingDetails);
+      const newBooking = await event.createBooking(bookingDetails);
+      return newBooking;
     } catch (error) {
       console.error("error while verfiication of payment", error);
       throw error;

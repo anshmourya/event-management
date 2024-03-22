@@ -16,7 +16,6 @@ export interface Event extends Document {
 export interface Booking {
   createdBy: mongoose.Types.ObjectId | string;
   event: mongoose.Types.ObjectId | string;
-  quantity: number;
   paid: boolean;
   paymentId: string;
   orderId: string;
@@ -71,10 +70,6 @@ const booking: Schema<Booking> = new Schema({
   event: {
     type: Schema.Types.ObjectId,
     ref: "event",
-    required: true,
-  },
-  quantity: {
-    type: Number,
     required: true,
   },
   paid: {

@@ -45,6 +45,7 @@ class User {
       if (!(await bcrypt.compare(user.password, userExist.password))) {
         throw { message: "Incorrect password", code: 401 };
       }
+
       return userExist;
     } catch (error) {
       console.error(error);
@@ -52,7 +53,12 @@ class User {
     }
   }
 
-  async createToken(user: { id: string; name: string; role: string }) {
+  async createToken(user: {
+    id: string;
+    name: string;
+    role: string;
+    email: string;
+  }) {
     try {
       const token = jwt.sign(user, process.env.SECRET_KEY, {
         expiresIn: "30d",
@@ -66,7 +72,7 @@ class User {
 
   async verifyToken(
     token: string
-  ): Promise<{ id: string; name: string; role: string }> {
+  ): Promise<{ id: string; name: string; role: string; email: string }> {
     return new Promise((resolve, reject) => {
       jwt.verify(
         token,
@@ -81,6 +87,7 @@ class User {
             id: user.id,
             name: user.name,
             role: user.role,
+            email: user.email,
           });
         }
       );

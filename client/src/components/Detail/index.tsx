@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -21,11 +21,31 @@ interface detail {
   detail: eventResponse;
   children: ReactNode;
 }
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Razorpay: any;
+  }
+}
 const Detail = ({ children, detail }: detail) => {
-  const { createOrder } = useBooking();
+  const { createOrder, paymentVerification } = useBooking();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const handleModalOpen = () => setModalOpen(!modalOpen);
   const bookingHandler = useMutation({
     mutationKey: ["bookingHandler"],
     mutationFn: createOrder,
+    onSuccess: (data) => {
+      handleModalOpen();
+      const razor = new (window as Window).Razorpay({
+        ...data,
+        handler: (response) => {
+          paymentVerification({ ...response, eventId: detail._id });
+        },
+      });
+      razor.open("payment.failed", (response) => {
+        console.log(response);
+      });
+    },
   });
 
   const orderHandler = async () => {
@@ -36,8 +56,8 @@ const Detail = ({ children, detail }: detail) => {
     });
   };
   return (
-    <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+    <Dialog open={modalOpen}>
+      <DialogTrigger onClick={handleModalOpen}>{children}</DialogTrigger>
       <DialogContent className="w-full">
         <DialogHeader>
           <DialogTitle>{detail.name}</DialogTitle>

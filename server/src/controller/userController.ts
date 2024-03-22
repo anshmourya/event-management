@@ -22,6 +22,7 @@ class UserController {
         role: checkCredential.role,
         name: checkCredential.name,
         id: checkCredential.id,
+        email: checkCredential.email,
       });
 
       res.json({

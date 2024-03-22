@@ -44,11 +44,27 @@ class EventController {
   }
   async booking(req: Request, res: Response, next: NextFunction) {
     try {
-      const bookingOrder = await event.createBookingOrder(req.body);
+      const { id, ...rest } = await event.createBookingOrder(req.body);
+      const order = {
+        key: process.env.RAZOR_PAY_KEY_ID,
+        order_id: id,
+        ...rest,
+        prefill: {
+          name: req.user.name,
+          email: req.user.email,
+          contact: "9000090000",
+        },
+        notes: {
+          address: "this is the demo payment. Please do not pay the real money",
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
       return res.json({
         status: "success",
         message: "tickets has been booked successfully",
-        data: bookingOrder,
+        data: order,
       });
     } catch (error) {
       next(error);
@@ -62,7 +78,7 @@ class EventController {
         userId: req.user.id,
       };
 
-      const verifyPayment = payment.verfiication(options);
+      const verifyPayment = await payment.verfiication(options);
       res.json({
         message: "booking has been done successfully",
         data: verifyPayment,

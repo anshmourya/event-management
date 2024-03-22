@@ -21,7 +21,6 @@ const Signin = () => {
     mutationFn: createSession,
     mutationKey: ["loginHandler"],
     onSuccess: () => {
-      toast.success("you are successfully signed in");
       navigate("/");
     },
   });
