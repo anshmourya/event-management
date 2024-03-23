@@ -6,6 +6,25 @@ export interface paymentVerification {
   razorpay_signature: string;
   eventId: string;
 }
+
+interface Booking {
+  _id: string;
+  createdBy: string;
+  event: {
+    _id: string;
+    name: string;
+    price: number;
+    location: string;
+    max_ticket: number;
+    thumbnail: string;
+    tags: string[];
+    start_date: Date;
+    end_date: Date;
+    ticket_booked: number;
+  };
+  paid: boolean;
+}
+
 const useBooking = () => {
   const createOrder = async (eventId: string) => {
     try {
@@ -38,7 +57,7 @@ const useBooking = () => {
     }
   };
 
-  const MyBookings = async () => {
+  const MyBookings = async (): Promise<Booking[]> => {
     try {
       const { data } = await apis.get(`${baseUrl}/api/v1/bookings/list`, {});
       return data.data;

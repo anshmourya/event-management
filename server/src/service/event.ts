@@ -84,7 +84,11 @@ class Event {
 
   async createBooking(bookingDetail: Booking) {
     try {
+      console.log();
       const newBooking = await BookingModel.create(bookingDetail);
+      await EventModel.findByIdAndUpdate(bookingDetail.event, {
+        $inc: { ticket_booked: 1 },
+      });
       return newBooking;
     } catch (error) {
       console.error("error creating the booking after the payment", error);
@@ -94,7 +98,11 @@ class Event {
 
   async getBookingsByUser(userId: string) {
     try {
-      const bookings = await BookingModel.find({ createdBy: userId });
+      const bookings = await BookingModel.find(
+        { createdBy: userId },
+        { paymentSignature: false, orderId: false, paymentId: false }
+      ).populate("event");
+
       return bookings;
     } catch (error) {
       console.error("error getting the user booking", error);
