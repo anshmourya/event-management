@@ -21,7 +21,7 @@ const Signin = () => {
     mutationFn: createSession,
     mutationKey: ["loginHandler"],
     onSuccess: () => {
-      navigate("/");
+      window.location.href = "/";
     },
   });
 

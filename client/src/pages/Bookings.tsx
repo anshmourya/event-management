@@ -5,7 +5,6 @@ import { MdOutlineLocationOn, MdOutlineDateRange } from "react-icons/md"; // Imp
 // import {} from "react-icons/io";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { format } from "date-fns";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 const Bookings = () => {
   const { MyBookings } = useBooking();
   const { data: mybookingsList, isLoading } = useQuery({

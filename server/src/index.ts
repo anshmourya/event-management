@@ -31,3 +31,7 @@ database()
   .catch((error) => {
     console.error(error);
   });
+
+setInterval(() => {
+  console.log("keeping the server alive");
+}, 300000);
