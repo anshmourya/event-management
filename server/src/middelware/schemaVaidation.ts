@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import * as yup from "yup";
+import * as Yup from "Yup";
 const validate =
-  (schema: yup.Schema<unknown>) =>
+  (schema: Yup.Schema<unknown>) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.validate({
