@@ -1,8 +1,6 @@
 import eventcontroller from "@controller/eventController";
 import userController from "@controller/userController";
-import validate from "@middelware/schemaVaidation";
 import { helper } from "@utils/helper";
-import { paymentVerificationSchema } from "@utils/validation";
 import express from "express";
 const router = express.Router();
 router.get("/", (req, res) => {
@@ -20,11 +18,7 @@ router.get("/event/:id", eventcontroller.getEventById);
 
 //bookings
 router.post("/bookingOrder", eventcontroller.booking);
-router.post(
-  "/bookingVerification",
-  validate(paymentVerificationSchema),
-  eventcontroller.bookingVerfication
-);
+router.post("/bookingVerification", eventcontroller.bookingVerfication);
 router.get("/bookings/list", eventcontroller.getBookingByUser);
 
 export default router;
