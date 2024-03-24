@@ -7,7 +7,7 @@ import error from "@middelware/error";
 import auth from "@middelware/auth";
 import cors from "cors";
 const app = express();
-const port = 3000;
+const port = process.env.port || 3000;
 app.use(cors());
 app.use(express.json());
 
@@ -25,7 +25,7 @@ app.use(error);
 database()
   .then(() =>
     app.listen(port, () => {
-      return console.log(`Express is listening at http://localhost:${port}`);
+      return console.log(`Express is listening at ${port}`);
     })
   )
   .catch((error) => {
